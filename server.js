@@ -3,8 +3,8 @@ import express from "express";
 const app = express();
 
 app.get("/", async (req, res) => {
-    console.log("node server1 is running");
-    res.json({message: "node server1 is running"});
+    console.log("node server is running");
+    res.json({message: "node server is running"});
 });
 
 
