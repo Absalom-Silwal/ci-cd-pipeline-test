@@ -1,0 +1,25 @@
+{
+  "name": "ci-cd-pipeline-test",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "npm run build && node server.js",
+    "build": "echo 'Building the project...'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Absalom-Silwal/ci-cd-pipeline-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Absalom-Silwal/ci-cd-pipeline-test/issues"
+  },
+  "homepage": "https://github.com/Absalom-Silwal/ci-cd-pipeline-test#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}
