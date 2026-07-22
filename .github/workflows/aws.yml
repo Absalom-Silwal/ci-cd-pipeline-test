@@ -2,26 +2,45 @@ name: Deploy to EC2
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repository
       - name: Checkout code
         uses: actions/checkout@v5
-      - name: SSH into EC2 and deploy
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.EC2_HOST }}
-          REMOTE_USER: ${{ secrets.EC2_USER }}
-          TARGET: /home/ubuntu/ci-cd-pipeline-test
+
+      # 2. Configure SSH connection
+      - name: Configure SSH
         run: |
-            ssh -v ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-              cd /home/ubuntu/ci-cd-pipeline-test
-              git pull origin main
-              npm install
-              npm run build
-              pm2 restart app
-            EOF
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      # 3. Deploy application to EC2
+      - name: Deploy to EC2
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+
+            # Go to application directory
+            cd /home/ubuntu/ci-cd-pipeline-test
+
+            # Get latest code
+            git fetch origin
+            git reset --hard origin/main
+
+            # Install dependencies
+            npm install
+
+            # Build application (if required)
+            npm run build
+
+            # Restart application
+            pm2 restart app || pm2 start npm --name app -- start
+
+          EOF
