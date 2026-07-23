@@ -10,5 +10,5 @@ jobs:
         with:
           host: 13.223.80.129
           username: ubuntu
-          password: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.EC2_SSH_KEY }}
           script: whoami
