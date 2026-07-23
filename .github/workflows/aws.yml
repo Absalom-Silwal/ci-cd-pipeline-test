@@ -1,46 +1,18 @@
-name: Deploy to EC2
-
-on:
-  push:
-    branches:
-      - main
-
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
 jobs:
-  deploy:
+  Explore-GitHub-Actions:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. Checkout repository
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      # 2. Configure SSH connection
-      - name: Configure SSH
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v6
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-
-      # 3. Deploy application to EC2
-      - name: Deploy to EC2
-        run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-
-            # Go to application directory
-            cd /home/ubuntu/ci-cd-pipeline-test
-
-            # Get latest code
-            git fetch origin
-            git reset --hard origin/main
-
-            # Install dependencies
-            npm install
-
-            # Build application (if required)
-            npm run build
-
-            # Restart application
-            pm2 restart app || pm2 start npm --name app -- start
-
-          EOF
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
