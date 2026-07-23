@@ -9,8 +9,9 @@ jobs:
         uses: actions/checkout@v6
       - name: List files in the repository
         run: |
-          ssh ubuntu@ec2-13-223-80-129.compute-1.amazonaws.com
+          ssh 13.223.80.129
           cd ci-cd-pipeline-test
           git pull
+          npm install
           npm start
       - run: echo "🍏 This job's status is ${{ job.status }}."
