@@ -13,7 +13,7 @@ jobs:
       - name: Execute remote SSH commands
         uses: appleboy/ssh-action@v1
         with:
-          host: ec2-54-224-21-201.compute-1.amazonaws.com
+          host: ec2-54-89-151-14.compute-1.amazonaws.com
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
