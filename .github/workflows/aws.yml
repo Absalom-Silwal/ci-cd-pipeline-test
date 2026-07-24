@@ -1,14 +1,22 @@
-name: Remote SSH Command
-on: [push]
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
-  build:
-    name: Build
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Execute remote SSH commands using password
+      - name: Execute remote SSH commands
         uses: appleboy/ssh-action@v1
         with:
           host: 13.223.80.129
           username: ubuntu
-          password: ${{ secrets.EC2_SSH_KEY }}
-          script: whoami
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            whoami
+            pwd
+            ls -la
