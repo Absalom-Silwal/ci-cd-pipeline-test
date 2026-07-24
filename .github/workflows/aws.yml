@@ -17,6 +17,8 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            whoami
-            pwd
-            ls -la
+            cd ci-cd-pipeline-test
+            git pull origin main
+            npm install
+            npm start
+            
